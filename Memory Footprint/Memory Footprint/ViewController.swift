@@ -8,9 +8,9 @@
 
 import UIKit
 
-enum ImageAlternative {
-    case regular
-    case lossy
+enum LoadingAlternative : String{
+    case displayP3
+    case sRGB
     case downsample
     case uiGraphicsRenderer
 }
@@ -18,29 +18,23 @@ enum ImageAlternative {
 class ViewController: UIViewController {
 
     @IBOutlet var containerView: UIView!
-    @IBOutlet var memoryConsumptionLabel: UILabel!
     @IBOutlet var alternativeLabel: UILabel!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        refreshConsumedMemory()
-    }
-
     @IBAction func clearAll() {
-
         for child in children {
             child.willMove(toParent: nil)
             child.removeFromParent()
             child.view.removeFromSuperview()
         }
+        alternativeLabel.text = nil
     }
 
-    @IBAction func loadRegular() {
-        self.load(.regular)
+    @IBAction func loadDisplayP3() {
+        self.load(.displayP3)
     }
 
-    @IBAction func loadLossy() {
-        self.load(.lossy)
+    @IBAction func loadRGB() {
+        self.load(.sRGB)
     }
 
     @IBAction func loadDownsampledImage() {
@@ -51,23 +45,18 @@ class ViewController: UIViewController {
         self.load(.uiGraphicsRenderer)
     }
 
-    private func refreshConsumedMemory() {
-        memoryConsumptionLabel.text = memoryInMB().map{ "Using \($0) MB"} ?? "Unable to calculate MB"
-    }
-
-    private func load(_ alternative: ImageAlternative) {
+    private func load(_ alternative: LoadingAlternative) {
         switch alternative {
-        case .regular:
-            self.show(image: UIImage(named: "regular-catedral")!)
-        case .lossy:
-            self.show(image: UIImage(named: "lossy-catedral")!)
+        case .displayP3:
+            self.show(image: UIImage(named: alternative.rawValue)!)
+        case .sRGB:
+            self.show(image: UIImage(named: alternative.rawValue)!)
         case .downsample:
             self.show(try downsampledImage(), errorMessage: "Unable to downsample image")
         case .uiGraphicsRenderer:
             self.show(try renderedImage(), errorMessage: "Unable to render image")
         }
-
-        refreshConsumedMemory()
+        self.alternativeLabel.text = "Loaded: \(alternative.rawValue)"
     }
 
     private func show(_ generator : @autoclosure () throws -> UIImage, errorMessage: String) {
@@ -76,13 +65,12 @@ class ViewController: UIViewController {
             self.show(image: image)
         }
         catch let error {
-            print ("🐍 error: \n \(error)")
             alternativeLabel.text = error.localizedDescription
         }
     }
 
     private func show(image:UIImage) {
-        clearAll()
+        self.clearAll()
 
         let imageView = UIImageView()
         imageView.image = image
@@ -93,33 +81,11 @@ class ViewController: UIViewController {
         presented.view.frame = frame
         imageView.frame = frame
 
-        containerView.addSubview(presented.view)
+        self.containerView.addSubview(presented.view)
 
         self.addChild(presented)
         presented.didMove(toParent: self)
         
-    }
-
-    //https://stackoverflow.com/questions/27556807/swift-pointer-problems-with-mach-task-basic-info
-    private func memoryInMB() -> mach_vm_size_t? {
-        var info = mach_task_basic_info()
-        let MACH_TASK_BASIC_INFO_COUNT = MemoryLayout<mach_task_basic_info>.stride/MemoryLayout<natural_t>.stride
-        var count = mach_msg_type_number_t(MACH_TASK_BASIC_INFO_COUNT)
-
-        let kerr: kern_return_t = withUnsafeMutablePointer(to: &info) {
-            $0.withMemoryRebound(to: integer_t.self, capacity: MACH_TASK_BASIC_INFO_COUNT) {
-                task_info(mach_task_self_,
-                          task_flavor_t(MACH_TASK_BASIC_INFO),
-                          $0,
-                          &count)
-            }
-        }
-
-        if kerr == KERN_SUCCESS {
-            return info.resident_size / 1024 / 1024
-        } else {
-            return nil
-        }
     }
 
     private var containerSize: CGSize {
@@ -133,11 +99,11 @@ class ViewController: UIViewController {
     }
 
     private func downsampledImage() throws -> UIImage {
-        return try downsample(imageAt: catedralUrl, to: containerSize, scale: 4)
+        return try downsample(imageAt: catedralUrl, to: containerSize, scale: 1)
     }
 
     private func renderedImage() throws -> UIImage {
-        return try UIGraphicsRenderer.renderImageAt(url: catedralUrl as NSURL, size: containerSize)
+        return try UIGraphicsRenderer.renderImageAt(url: catedralUrl as NSURL, size: containerSize, scale: 1)
     }
 
 }

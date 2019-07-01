@@ -20,15 +20,15 @@ enum RenderingError : Error {
 
 public extension UIGraphicsRenderer {
 
-    static func renderImageAt(url: NSURL, size: CGSize) throws -> UIImage {
-        return try renderImagesAt(urls: [url], size: size)
+    static func renderImageAt(url: NSURL, size: CGSize, scale: CGFloat = 1) throws -> UIImage {
+        return try renderImagesAt(urls: [url], size: size, scale: scale)
     }
 
-    static func renderImagesAt(urls: [NSURL], size: CGSize) throws -> UIImage {
+    static func renderImagesAt(urls: [NSURL], size: CGSize, scale: CGFloat = 1) throws -> UIImage {
         let renderer = UIGraphicsImageRenderer(size: size)
 
         let options: [NSString: Any] = [
-            kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height),
+            kCGImageSourceThumbnailMaxPixelSize: max(size.width * scale, size.height * scale),
             kCGImageSourceCreateThumbnailFromImageAlways: true
         ]
 

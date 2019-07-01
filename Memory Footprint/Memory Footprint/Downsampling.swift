@@ -75,8 +75,19 @@ public func downsample(imageAt imageURL: URL, to size: CGSize, scale: CGFloat) t
     return try createThumbnail(from: imageSource, size: size, scale: scale)
 }
 
-
-//MARK:- helpers
+private func createThumbnail(from imageSource: CGImageSource, size: CGSize, scale:CGFloat) throws -> UIImage {
+    let maxDimensionInPixels = max(size.width, size.height) * scale
+    let options = [
+        //kCGImageSourceShouldCacheImmediately is the most important option.
+        //Tell CG that to decode the thumbnail it immediately.
+        //At that exact moment, the decoded image buffer is created and the cpu hit for decoding is received.
+        kCGImageSourceCreateThumbnailFromImageAlways: true,
+        kCGImageSourceShouldCacheImmediately: true,
+        kCGImageSourceCreateThumbnailWithTransform: true,
+        kCGImageSourceThumbnailMaxPixelSize: maxDimensionInPixels] as CFDictionary
+    guard let thumbnail = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options) else { throw DownsamplingError.unableToCreateThumbnail }
+    return UIImage(cgImage: thumbnail)
+}
 
 private func assertPreconditions(size: CGSize, scale: CGFloat) throws {
     assert(scale > 0)
@@ -85,22 +96,6 @@ private func assertPreconditions(size: CGSize, scale: CGFloat) throws {
     assert(size.width > 0)
     assert(size.height > 0)
     guard size.height > 0, size.width > 0 else { throw DownsamplingError.invalidSize }
-}
-
-private func downsampleOptions(maxDimensionInPixels: CGFloat) -> CFDictionary {
-    return [
-        kCGImageSourceCreateThumbnailFromImageAlways: true,
-        //kCGImageSourceShouldCacheImmediately is the most important option. Tell CG that to decode the thumbnail it immediately. At that exact moment, the decoded image buffer is created and the cpu hit for decoding is received.
-        kCGImageSourceShouldCacheImmediately: true,
-        kCGImageSourceCreateThumbnailWithTransform: true,
-        kCGImageSourceThumbnailMaxPixelSize: maxDimensionInPixels] as CFDictionary
-}
-
-private func createThumbnail(from imageSource: CGImageSource, size: CGSize, scale:CGFloat) throws -> UIImage {
-    let maxDimensionInPixels = max(size.width, size.height) * scale
-    let options = downsampleOptions(maxDimensionInPixels: maxDimensionInPixels)
-    guard let thumbnail = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options) else { throw DownsamplingError.unableToCreateThumbnail }
-    return UIImage(cgImage: thumbnail)
 }
 
 enum DownsamplingError : Error {

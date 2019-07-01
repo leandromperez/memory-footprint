@@ -15,6 +15,7 @@
 		9CB6258D22C7D97F006CBA91 /* Downsampling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB6258C22C7D97F006CBA91 /* Downsampling.swift */; };
 		9CB6258F22C7FAD2006CBA91 /* catedral.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6258E22C7FAD2006CBA91 /* catedral.jpg */; };
 		9CC9A17422C9053400C837B4 /* UIGraphicsRenderer + images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9A17322C9053300C837B4 /* UIGraphicsRenderer + images.swift */; };
+		9CC9A17622C92E0D00C837B4 /* catedralsRGB.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9A17522C92E0D00C837B4 /* catedralsRGB.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		9CB6258C22C7D97F006CBA91 /* Downsampling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downsampling.swift; sourceTree = "<group>"; };
 		9CB6258E22C7FAD2006CBA91 /* catedral.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = catedral.jpg; path = ../../../../../Downloads/catedral.jpg; sourceTree = "<group>"; };
 		9CC9A17322C9053300C837B4 /* UIGraphicsRenderer + images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIGraphicsRenderer + images.swift"; sourceTree = "<group>"; };
+		9CC9A17522C92E0D00C837B4 /* catedralsRGB.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = catedralsRGB.jpeg; path = ../../../../../Downloads/catedralsRGB.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				9CB6258C22C7D97F006CBA91 /* Downsampling.swift */,
 				9CC9A17322C9053300C837B4 /* UIGraphicsRenderer + images.swift */,
 				9CB6258E22C7FAD2006CBA91 /* catedral.jpg */,
+				9CC9A17522C92E0D00C837B4 /* catedralsRGB.jpeg */,
 				9CB6257E22C7CE5E006CBA91 /* Main.storyboard */,
 				9CB6258122C7CE62006CBA91 /* Assets.xcassets */,
 				9CB6258322C7CE62006CBA91 /* LaunchScreen.storyboard */,
@@ -134,6 +137,7 @@
 				9CB6258522C7CE62006CBA91 /* LaunchScreen.storyboard in Resources */,
 				9CB6258F22C7FAD2006CBA91 /* catedral.jpg in Resources */,
 				9CB6258222C7CE62006CBA91 /* Assets.xcassets in Resources */,
+				9CC9A17622C92E0D00C837B4 /* catedralsRGB.jpeg in Resources */,
 				9CB6258022C7CE5E006CBA91 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
