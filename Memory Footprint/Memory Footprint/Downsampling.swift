@@ -66,6 +66,7 @@ public func downsample(imageData: Data, to frameSize: CGSize, scale: CGFloat) th
 ///
 /// - Return value: throw an Error if something went wrong, or the UIImage if the downsampling was possible
 public func downsample(imageAt imageURL: URL, to size: CGSize, scale: CGFloat) throws -> UIImage {
+    assert(imageURL.isFileURL)
     try assertPreconditions(size: size, scale: scale)
 
     //Tells CG to not go ahead and decode the image immediately. We will use this thumbnail object to fetch information from.

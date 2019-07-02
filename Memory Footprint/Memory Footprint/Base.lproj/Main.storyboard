@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ksY-a6-Tl5">
-                                <rect key="frame" x="-11.5" y="40" width="398" height="598.5"/>
+                                <rect key="frame" x="-11.5" y="40" width="398" height="632.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to load an image" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgP-rP-YgF">
                                         <rect key="frame" x="0.0" y="0.0" width="398" height="20.5"/>
@@ -55,22 +55,29 @@
                                             <action selector="loadUIGraphicsRenderer" destination="BYZ-38-t0r" eventType="touchUpInside" id="QT6-n4-6cO"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2gk-FX-6YJ">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SI3-cf-uEa" userLabel="Incremental">
                                         <rect key="frame" x="0.0" y="160.5" width="398" height="30"/>
+                                        <state key="normal" title="Incremental"/>
+                                        <connections>
+                                            <action selector="loadIncremental" destination="BYZ-38-t0r" eventType="touchUpInside" id="WVf-yv-Fl0"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2gk-FX-6YJ">
+                                        <rect key="frame" x="0.0" y="194.5" width="398" height="30"/>
                                         <state key="normal" title="Clear all"/>
                                         <connections>
                                             <action selector="clearAll" destination="BYZ-38-t0r" eventType="touchUpInside" id="UkO-Gb-pdp"/>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jG9-ER-RPR" userLabel="Container">
-                                        <rect key="frame" x="0.0" y="194.5" width="398" height="350"/>
+                                        <rect key="frame" x="0.0" y="228.5" width="398" height="350"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="350" id="2J3-Kw-kcO"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t7U-7e-8s5">
-                                        <rect key="frame" x="0.0" y="548.5" width="398" height="50"/>
+                                        <rect key="frame" x="0.0" y="582.5" width="398" height="50"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -88,6 +95,7 @@
                     <connections>
                         <outlet property="alternativeLabel" destination="t7U-7e-8s5" id="0uO-ss-nTI"/>
                         <outlet property="containerView" destination="jG9-ER-RPR" id="JVy-kR-7y0"/>
+                        <outlet property="stackView" destination="ksY-a6-Tl5" id="bED-4q-2fU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

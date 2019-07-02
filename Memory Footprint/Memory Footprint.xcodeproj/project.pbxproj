@@ -16,6 +16,7 @@
 		9CB6258F22C7FAD2006CBA91 /* catedral.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6258E22C7FAD2006CBA91 /* catedral.jpg */; };
 		9CC9A17422C9053400C837B4 /* UIGraphicsRenderer + images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC9A17322C9053300C837B4 /* UIGraphicsRenderer + images.swift */; };
 		9CC9A17622C92E0D00C837B4 /* catedralsRGB.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9CC9A17522C92E0D00C837B4 /* catedralsRGB.jpeg */; };
+		9CF5CAF822CABEC2008979C9 /* Incremental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CF5CAF722CABEC2008979C9 /* Incremental.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		9CB6258E22C7FAD2006CBA91 /* catedral.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = catedral.jpg; path = ../../../../../Downloads/catedral.jpg; sourceTree = "<group>"; };
 		9CC9A17322C9053300C837B4 /* UIGraphicsRenderer + images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIGraphicsRenderer + images.swift"; sourceTree = "<group>"; };
 		9CC9A17522C92E0D00C837B4 /* catedralsRGB.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = catedralsRGB.jpeg; path = ../../../../../Downloads/catedralsRGB.jpeg; sourceTree = "<group>"; };
+		9CF5CAF722CABEC2008979C9 /* Incremental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incremental.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				9CB6257A22C7CE5E006CBA91 /* AppDelegate.swift */,
 				9CB6257C22C7CE5E006CBA91 /* ViewController.swift */,
 				9CB6258C22C7D97F006CBA91 /* Downsampling.swift */,
+				9CF5CAF722CABEC2008979C9 /* Incremental.swift */,
 				9CC9A17322C9053300C837B4 /* UIGraphicsRenderer + images.swift */,
 				9CB6258E22C7FAD2006CBA91 /* catedral.jpg */,
 				9CC9A17522C92E0D00C837B4 /* catedralsRGB.jpeg */,
@@ -149,6 +152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CF5CAF822CABEC2008979C9 /* Incremental.swift in Sources */,
 				9CC9A17422C9053400C837B4 /* UIGraphicsRenderer + images.swift in Sources */,
 				9CB6257D22C7CE5E006CBA91 /* ViewController.swift in Sources */,
 				9CB6257B22C7CE5E006CBA91 /* AppDelegate.swift in Sources */,
