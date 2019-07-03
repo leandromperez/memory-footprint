@@ -14,6 +14,7 @@ enum LoadingAlternative : String, CaseIterable {
     case downsample
     case uiGraphicsRenderer
     case incremental
+    case incremental2
 }
 
 class ViewController: UIViewController {
@@ -53,6 +54,10 @@ class ViewController: UIViewController {
         self.load(.incremental)
     }
 
+    @IBAction func loadIncremental2() {
+        self.load(.incremental2)
+    }
+
     @IBAction func loadDisplayP3() {
         self.load(.displayP3)
     }
@@ -81,7 +86,10 @@ class ViewController: UIViewController {
             self.show(try renderedImage(), errorMessage: "Unable to render image")
         case .incremental:
             self.loadIncrementally()
+        case .incremental2:
+            self.loadIncrementally2()
         }
+        
         self.alternativeLabel.text = "Loaded: \(alternative.rawValue)"
     }
 
@@ -94,6 +102,19 @@ class ViewController: UIViewController {
             self.show(image: UIImage(cgImage: cgImage))
         }
     }
+
+
+    private var source : IncrementalRenderingSource?
+    private func loadIncrementally2() {
+        source?.stopLoading()
+        source = try? UIGraphicsRenderer.renderImageIncrementally(size: containerSize,
+                                                                  scale: 1,
+                                                                  fileURL: interlacedURL) {  [unowned self] (image) in
+                                                                    self.show(image: image)
+        }
+    }
+
+
 
     private func show(_ generator : @autoclosure () throws -> UIImage, errorMessage: String) {
         do {
@@ -128,6 +149,12 @@ class ViewController: UIViewController {
         return self.containerView.frame.size
     }
 
+
+    private var interlacedURL : URL {
+        guard let imagePath = Bundle.main.path(forResource: "interlaced", ofType: "jpeg") else {fatalError()}
+        let imageUrl = URL(fileURLWithPath: imagePath)
+        return imageUrl
+    }
     private var catedralUrl : URL {
         guard let imagePath = Bundle.main.path(forResource: "catedral", ofType: "jpg") else {fatalError()}
         let imageUrl = URL(fileURLWithPath: imagePath)

@@ -40,6 +40,7 @@ class IncrementalImageLoader {
     }
 
     func load(_ callback: @escaping (CGImage) -> Void) {
+        self.callback = callback
         loadDataTimer = Timer.scheduledTimer(timeInterval: updateInterval,
                                              target: self,
                                              selector: #selector(loadMoreData),
@@ -66,7 +67,7 @@ class IncrementalImageLoader {
             self.update(Data(chunk), isFinal: isFinal)
 
             DispatchQueue.main.async {
-                guard let image = self.cgImage(at: self.progress) else { return }
+                guard let image = self.cgImage(at: 0) else { return }
                 self.callback?(image)
             }
         }
