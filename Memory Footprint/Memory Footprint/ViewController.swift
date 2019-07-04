@@ -22,21 +22,6 @@ class ViewController: UIViewController {
     @IBOutlet var alternativeLabel: UILabel!
     @IBOutlet var stackView : UIStackView!
 
-    private var targetProxies:  [ButtonTargetProxy] = []
-
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        for alternative in LoadingAlternative.allCases {
-//            let button = UIButton()
-//            let proxy = button.addTarget(for: .touchUpInside) { [unowned self] _ in self.load(alternative) }
-//            targetProxies.append(proxy)
-//            button.titleLabel?.text = alternative.rawValue
-//            button.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-//            stackView.addSubview(button)
-//        }
-//        self.view.setNeedsLayout()
-//        self.view.layoutSubviews()
-//    }
 
     @IBAction func clearAll() {
         for child in children {
@@ -44,8 +29,9 @@ class ViewController: UIViewController {
             child.removeFromParent()
             child.view.removeFromSuperview()
         }
-        loader?.stopLoading()
-        loader = nil
+
+        source?.stopLoading()
+        source = nil
         alternativeLabel.text = nil
     }
 
@@ -70,6 +56,7 @@ class ViewController: UIViewController {
     }
 
     private func load(_ alternative: LoadingAlternative) {
+        clearAll()
         switch alternative {
         case .displayP3:
             self.show(image: UIImage(named: alternative.rawValue)!)
@@ -82,16 +69,19 @@ class ViewController: UIViewController {
         case .incremental:
             self.loadIncrementally()
         }
+        
         self.alternativeLabel.text = "Loaded: \(alternative.rawValue)"
     }
 
-
-    private var loader : IncrementalImageLoader?
+    private var source : ImageRenderingIncrementalSource?
     private func loadIncrementally() {
-        loader?.stopLoading()
-        loader = try? IncrementalImageLoader(fileURL: catedralUrl)
-        loader?.load{ [unowned self] cgImage in
-            self.show(image: UIImage(cgImage: cgImage))
+        source?.stopLoading()
+        source = try? UIGraphicsRenderer.renderImageIncrementally(size: containerSize,
+                                                                  scale: 1,
+                                                                  fileURL: catedralUrl,
+                                                                  timeInterval: 0.1,
+                                                                  increment:1024*600) {  [unowned self] (image) in
+                                                                    self.show(image: image)
         }
     }
 
@@ -106,7 +96,6 @@ class ViewController: UIViewController {
     }
 
     private func show(image:UIImage) {
-        self.clearAll()
 
         let imageView = UIImageView()
         imageView.image = image
@@ -127,7 +116,7 @@ class ViewController: UIViewController {
     private var containerSize: CGSize {
         return self.containerView.frame.size
     }
-
+    
     private var catedralUrl : URL {
         guard let imagePath = Bundle.main.path(forResource: "catedral", ofType: "jpg") else {fatalError()}
         let imageUrl = URL(fileURLWithPath: imagePath)
@@ -135,30 +124,10 @@ class ViewController: UIViewController {
     }
 
     private func downsampledImage() throws -> UIImage {
-        return try downsample(imageAt: catedralUrl, to: containerSize, scale: 1)
+        return try UIImage.downsampled(from: catedralUrl, to: containerSize, scale: 1)
     }
 
     private func renderedImage() throws -> UIImage {
-        return try UIGraphicsRenderer.renderImageAt(url: catedralUrl as NSURL, size: containerSize, scale: 1)
-    }
-
-}
-
-
-public class ButtonTargetProxy {
-    var closure: (AnyObject) -> Void
-    public init(closure: @escaping (AnyObject) -> Void) {
-        self.closure = closure
-    }
-    @objc func execute(sender: AnyObject) {
-        closure(sender)
-    }
-}
-
-extension UIButton {
-    func addTarget(for event: UIControl.Event, closure: @escaping (AnyObject) -> Void ) -> ButtonTargetProxy {
-        let proxy = ButtonTargetProxy(closure: closure)
-        self.addTarget(proxy, action: #selector(ButtonTargetProxy.execute(sender:)), for: event)
-        return proxy
+        return try UIImage.rendered(from: catedralUrl as NSURL, size: containerSize, scale: 1)
     }
 }
