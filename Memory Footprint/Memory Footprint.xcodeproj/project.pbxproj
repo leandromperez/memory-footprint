@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9C669BE922CD6B9300BC82E9 /* interlaced.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 9C669BE822CD6B9300BC82E9 /* interlaced.jpeg */; };
 		9CB6257B22C7CE5E006CBA91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB6257A22C7CE5E006CBA91 /* AppDelegate.swift */; };
 		9CB6257D22C7CE5E006CBA91 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB6257C22C7CE5E006CBA91 /* ViewController.swift */; };
 		9CB6258022C7CE5E006CBA91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6257E22C7CE5E006CBA91 /* Main.storyboard */; };
@@ -21,7 +20,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9C669BE822CD6B9300BC82E9 /* interlaced.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = interlaced.jpeg; path = "../../../../Test Projects/ImageIOSwift/Example/Images/interlaced.jpeg"; sourceTree = "<group>"; };
 		9CB6257722C7CE5E006CBA91 /* Memory Footprint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Memory Footprint.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB6257A22C7CE5E006CBA91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CB6257C22C7CE5E006CBA91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -72,7 +70,6 @@
 				9CF5CAF722CABEC2008979C9 /* Incremental.swift */,
 				9CC9A17322C9053300C837B4 /* UIGraphicsRenderer + images.swift */,
 				9CB6258E22C7FAD2006CBA91 /* catedral.jpg */,
-				9C669BE822CD6B9300BC82E9 /* interlaced.jpeg */,
 				9CC9A17522C92E0D00C837B4 /* catedralsRGB.jpeg */,
 				9CB6257E22C7CE5E006CBA91 /* Main.storyboard */,
 				9CB6258122C7CE62006CBA91 /* Assets.xcassets */,
@@ -140,7 +137,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C669BE922CD6B9300BC82E9 /* interlaced.jpeg in Resources */,
 				9CB6258522C7CE62006CBA91 /* LaunchScreen.storyboard in Resources */,
 				9CB6258F22C7FAD2006CBA91 /* catedral.jpg in Resources */,
 				9CB6258222C7CE62006CBA91 /* Assets.xcassets in Resources */,

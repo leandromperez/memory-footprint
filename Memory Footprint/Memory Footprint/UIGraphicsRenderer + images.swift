@@ -87,7 +87,6 @@ public class IncrementalRenderingSource: RenderingSource {
             if isFinal {
                 self.stopLoading()
             }
-
             self.update(Data(chunk), isFinal: isFinal)
 
             DispatchQueue.main.async {
@@ -96,24 +95,31 @@ public class IncrementalRenderingSource: RenderingSource {
         }
     }
 
-    private var cgImageSource : CGImageSource = CGImageSourceCreateIncremental([ : ] as CFDictionary)
-
     private func update(_ data: Data, isFinal: Bool) {
-        CGImageSourceUpdateData(cgImageSource, data as CFData, isFinal)
+        CGImageSourceUpdateData(cgSource, data as CFData, isFinal)
     }
 }
 
 
 
 public struct ImageRenderingOptions {
-    public let createThumbnailFromImageAlways : Bool = true
-    public let shouldAllowFloat: Bool = false
-    public let shouldCache: Bool = true
-    public let createThumbnailFromImageIfAbsent: Bool = false
+    public let createThumbnailFromImageAlways : Bool
+    public let shouldAllowFloat: Bool
+    public let shouldCache: Bool
+    public let createThumbnailFromImageIfAbsent: Bool
 
-    public init() {}
+    public init( createThumbnailFromImageAlways : Bool = true,
+                 shouldAllowFloat: Bool = false,
+                 shouldCache: Bool = true,
+                 createThumbnailFromImageIfAbsent: Bool = false) {
 
-    var cgOptions: [NSString: Any] {
+        self.createThumbnailFromImageAlways = createThumbnailFromImageAlways
+        self.shouldAllowFloat = shouldAllowFloat
+        self.shouldCache = shouldCache
+        self.createThumbnailFromImageIfAbsent = createThumbnailFromImageIfAbsent
+    }
+
+    public var cgOptions: [NSString: Any] {
         return [
             kCGImageSourceShouldAllowFloat : shouldAllowFloat,
             kCGImageSourceShouldCache : shouldCache,
@@ -125,6 +131,15 @@ public struct ImageRenderingOptions {
     public static var defaults : ImageRenderingOptions {
         return ImageRenderingOptions()
     }
+
+    public static var incremental : ImageRenderingOptions {
+        return ImageRenderingOptions(createThumbnailFromImageAlways: true,
+                              shouldAllowFloat: true,
+                              shouldCache: true,
+                              createThumbnailFromImageIfAbsent: false)
+    }
+
+
 }
 
 public extension UIGraphicsRenderer {
@@ -139,7 +154,7 @@ public extension UIGraphicsRenderer {
     static func renderImageIncrementally(size: CGSize,
                                          scale: CGFloat = 1,
                                          fileURL: URL,
-                                         options: ImageRenderingOptions = .defaults,
+                                         options: ImageRenderingOptions = .incremental,
                                          timeInterval: TimeInterval = 0.1,
                                          increment:Int = 500,
                                          dispatchQueue:DispatchQueue = .global(qos: .userInitiated),

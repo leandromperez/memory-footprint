@@ -25,28 +25,17 @@ class ViewController: UIViewController {
 
     private var targetProxies:  [ButtonTargetProxy] = []
 
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        for alternative in LoadingAlternative.allCases {
-//            let button = UIButton()
-//            let proxy = button.addTarget(for: .touchUpInside) { [unowned self] _ in self.load(alternative) }
-//            targetProxies.append(proxy)
-//            button.titleLabel?.text = alternative.rawValue
-//            button.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-//            stackView.addSubview(button)
-//        }
-//        self.view.setNeedsLayout()
-//        self.view.layoutSubviews()
-//    }
-
     @IBAction func clearAll() {
         for child in children {
             child.willMove(toParent: nil)
             child.removeFromParent()
             child.view.removeFromSuperview()
         }
+
         loader?.stopLoading()
         loader = nil
+        source?.stopLoading()
+        source = nil
         alternativeLabel.text = nil
     }
 
@@ -75,6 +64,7 @@ class ViewController: UIViewController {
     }
 
     private func load(_ alternative: LoadingAlternative) {
+        clearAll()
         switch alternative {
         case .displayP3:
             self.show(image: UIImage(named: alternative.rawValue)!)
@@ -97,7 +87,7 @@ class ViewController: UIViewController {
     private var loader : IncrementalImageLoader?
     private func loadIncrementally() {
         loader?.stopLoading()
-        loader = try? IncrementalImageLoader(fileURL: catedralUrl)
+        loader = try? IncrementalImageLoader(fileURL: catedralUrl, increment: 1024*200)
         loader?.load{ [unowned self] cgImage in
             self.show(image: UIImage(cgImage: cgImage))
         }
@@ -109,7 +99,9 @@ class ViewController: UIViewController {
         source?.stopLoading()
         source = try? UIGraphicsRenderer.renderImageIncrementally(size: containerSize,
                                                                   scale: 1,
-                                                                  fileURL: interlacedURL) {  [unowned self] (image) in
+                                                                  fileURL: catedralUrl,
+                                                                  timeInterval: 0.1,
+                                                                  increment:1024*600) {  [unowned self] (image) in
                                                                     self.show(image: image)
         }
     }
@@ -127,7 +119,6 @@ class ViewController: UIViewController {
     }
 
     private func show(image:UIImage) {
-        self.clearAll()
 
         let imageView = UIImageView()
         imageView.image = image
@@ -148,13 +139,7 @@ class ViewController: UIViewController {
     private var containerSize: CGSize {
         return self.containerView.frame.size
     }
-
-
-    private var interlacedURL : URL {
-        guard let imagePath = Bundle.main.path(forResource: "interlaced", ofType: "jpeg") else {fatalError()}
-        let imageUrl = URL(fileURLWithPath: imagePath)
-        return imageUrl
-    }
+    
     private var catedralUrl : URL {
         guard let imagePath = Bundle.main.path(forResource: "catedral", ofType: "jpg") else {fatalError()}
         let imageUrl = URL(fileURLWithPath: imagePath)
