@@ -14,7 +14,6 @@ enum LoadingAlternative : String, CaseIterable {
     case downsample
     case uiGraphicsRenderer
     case incremental
-    case incremental2
 }
 
 class ViewController: UIViewController {
@@ -23,7 +22,6 @@ class ViewController: UIViewController {
     @IBOutlet var alternativeLabel: UILabel!
     @IBOutlet var stackView : UIStackView!
 
-    private var targetProxies:  [ButtonTargetProxy] = []
 
     @IBAction func clearAll() {
         for child in children {
@@ -32,8 +30,6 @@ class ViewController: UIViewController {
             child.view.removeFromSuperview()
         }
 
-        loader?.stopLoading()
-        loader = nil
         source?.stopLoading()
         source = nil
         alternativeLabel.text = nil
@@ -41,10 +37,6 @@ class ViewController: UIViewController {
 
     @IBAction func loadIncremental() {
         self.load(.incremental)
-    }
-
-    @IBAction func loadIncremental2() {
-        self.load(.incremental2)
     }
 
     @IBAction func loadDisplayP3() {
@@ -76,26 +68,13 @@ class ViewController: UIViewController {
             self.show(try renderedImage(), errorMessage: "Unable to render image")
         case .incremental:
             self.loadIncrementally()
-        case .incremental2:
-            self.loadIncrementally2()
         }
         
         self.alternativeLabel.text = "Loaded: \(alternative.rawValue)"
     }
 
-
-    private var loader : IncrementalImageLoader?
+    private var source : ImageRenderingIncrementalSource?
     private func loadIncrementally() {
-        loader?.stopLoading()
-        loader = try? IncrementalImageLoader(fileURL: catedralUrl, increment: 1024*200)
-        loader?.load{ [unowned self] cgImage in
-            self.show(image: UIImage(cgImage: cgImage))
-        }
-    }
-
-
-    private var source : IncrementalRenderingSource?
-    private func loadIncrementally2() {
         source?.stopLoading()
         source = try? UIGraphicsRenderer.renderImageIncrementally(size: containerSize,
                                                                   scale: 1,
@@ -105,8 +84,6 @@ class ViewController: UIViewController {
                                                                     self.show(image: image)
         }
     }
-
-
 
     private func show(_ generator : @autoclosure () throws -> UIImage, errorMessage: String) {
         do {
@@ -147,30 +124,10 @@ class ViewController: UIViewController {
     }
 
     private func downsampledImage() throws -> UIImage {
-        return try downsample(imageAt: catedralUrl, to: containerSize, scale: 1)
+        return try UIImage.downsampled(from: catedralUrl, to: containerSize, scale: 1)
     }
 
     private func renderedImage() throws -> UIImage {
-        return try UIGraphicsRenderer.renderImageAt(url: catedralUrl as NSURL, size: containerSize, scale: 1)
-    }
-
-}
-
-
-public class ButtonTargetProxy {
-    var closure: (AnyObject) -> Void
-    public init(closure: @escaping (AnyObject) -> Void) {
-        self.closure = closure
-    }
-    @objc func execute(sender: AnyObject) {
-        closure(sender)
-    }
-}
-
-extension UIButton {
-    func addTarget(for event: UIControl.Event, closure: @escaping (AnyObject) -> Void ) -> ButtonTargetProxy {
-        let proxy = ButtonTargetProxy(closure: closure)
-        self.addTarget(proxy, action: #selector(ButtonTargetProxy.execute(sender:)), for: event)
-        return proxy
+        return try UIImage.rendered(from: catedralUrl as NSURL, size: containerSize, scale: 1)
     }
 }
